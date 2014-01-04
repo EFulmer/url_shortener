@@ -1,4 +1,4 @@
-DATABASE = '../db/urls.db'
+DATABASE = '/tmp/urls.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'bears'
