@@ -2,9 +2,9 @@
 -- those may be a little "heavy" for what will probably never amount to 
 -- more than a toy web app
 
-DROP TABLE IF EXISTS Links;
+DROP TABLE IF EXISTS Link;
 
-CREATE TABLE Links (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	url TEXT NOT NULL
+CREATE TABLE Link (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    url TEXT NOT NULL
 );
