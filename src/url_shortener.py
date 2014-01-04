@@ -8,10 +8,27 @@ import config
 app = Flask(__name__)
 
 
+def connect_db():
+    return sqlite3.connect(app.config['DATABASE'])
+
+
+def init_db():
+    if not os.path.exists(app.config['DATABASE']):
+        with contextlib.closing(connect_db()) as db:
+            # should schema.sql path be used here or defined at the top of
+            # the file?
+            with app.open_resource('../db/schema.sql') as schema:
+                contents = f.read()
+                db.executescript(contents)
+
+
 @app.route('/')
 def show_mainpage():
-    return 'hello world'
+    return app.config['DATABASE']
 
+
+                
+            
 def main():
     # TODO:
     # check for DB's existence and if it doesn't exist, initialize it
