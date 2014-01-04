@@ -1,3 +1,5 @@
+import contextlib
+import os
 import sqlite3
 
 from flask import Flask
@@ -18,22 +20,21 @@ def init_db():
             # should schema.sql path be used here or defined at the top of
             # the file?
             with app.open_resource('../db/schema.sql') as schema:
-                contents = f.read()
+                contents = schema.read()
                 db.executescript(contents)
 
 
 @app.route('/')
 def show_mainpage():
     return app.config['DATABASE']
-
-
-                
+    
             
 def main():
     # TODO:
     # check for DB's existence and if it doesn't exist, initialize it
     # using schema.sql; part this out into its own fn obviously.
     app.config.from_object(config)
+    init_db()
     app.run()
 
 
