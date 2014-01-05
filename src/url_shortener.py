@@ -10,6 +10,7 @@ from flask import redirect
 from flask import url_for
 from flask import render_template
 from flask import flash
+from flask import redirect
 
 import config
 
@@ -58,6 +59,19 @@ def add_url():
     g.db.commit()
     cr.close()
     return render_template('shorten_url.html')
+
+@app.route('/<int:short_url>', methods=['GET'])
+def reroute_url(short_url):
+    # TODO redirect to error page if short_url doesn't exist in db
+    cr = g.db.execute('SELECT url FROM Link WHERE id = (?)',
+            [short_url])
+    res = cr.fetchone()
+    cr.close()
+    # though res should always be a 1-tuple (or 0 if link isn't in 
+    # the db, redirect(res) will return something like 
+    # ('www.google.com,'), which obviously doesn't work, so we use
+    # res[0]
+    return redirect(res[0])
 
 
 def main():
