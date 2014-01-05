@@ -42,15 +42,30 @@ def teardown_request(exception):
 
 @app.route('/')
 def show_mainpage():
-    init_db()
-    cur = g.db.execute('SELECT * FROM Link;')
-    return repr(cur)
+    return render_template('shorten_url.html')
+
+@app.route('/add', methods=['POST'])
+def add_url():
+    # add the thing to the db
+    # TODO: flash message with shortened URL
+    # or build a new page with it.
+    # better idea - page with all URLS given and their shortened
+    # versions.
+    cr = g.db.cursor()
+    # TODO: check that URL is valid?
+    cr.execute('INSERT INTO Link (url) VALUES (?);',
+            [request.form['url']])
+    g.db.commit()
+    cr.close()
+    return render_template('shorten_url.html')
 
 
 def main():
     app.config.from_object(config)
-    if not os.path.exists(app.config['DATABASE']):
-        init_db()
+    # FIXME only init_db iff app.cfg doesn't exist
+    # using if not os.path.exists(app.config['DATABASE'] fails for 
+    # some reason
+    init_db()
     app.run()
 
 
