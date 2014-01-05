@@ -1,4 +1,4 @@
-import contextlib
+from contextlib import closing
 import os
 import sqlite3
 
@@ -22,34 +22,35 @@ def connect_db():
 
 
 def init_db():
-    with contextlib.closing(connect_db()) as db:
-        with app.open_resource('schema.sql', mode='r') as schema:
-            db.cursor().executescript(schema.read())
-            db.cursor().execute('DROP TABLE IF EXISTS Link;')
-            db.cursor().execute('''CREATE TABLE Link (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    url TEXT NOT NULL
-                    );''')
+    with closing(connect_db()) as db:
+        with app.open_resource('schema.sql', mode='r') as f:
+            db.cursor().executescript(f.read())
         db.commit()
 
 
-def show_urls():
-    connection = connect_db()
-    result = connection.execute('SELECT * FROM Link;')
-    return ''.join(r for r in result)
+@app.before_request
+def before_request():
+    g.db = connect_db()
+
+
+@app.teardown_request
+def teardown_request(exception):
+    db = getattr(g, 'db', None)
+    if db is not None:
+        db.close()
 
 
 @app.route('/')
 def show_mainpage():
-    return show_urls()
+    init_db()
+    cur = g.db.execute('SELECT * FROM Link;')
+    return repr(cur)
 
 
 def main():
-    # TODO:
-    # check for DB's existence and if it doesn't exist, initialize it
-    # using schema.sql; part this out into its own fn obviously.
     app.config.from_object(config)
-    init_db()
+    if not os.path.exists(app.config['DATABASE']):
+        init_db()
     app.run()
 
 
