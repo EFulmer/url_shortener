@@ -19,4 +19,5 @@ Features
 Code Cleanliness
 ----------------
 * Rename the URL database.
+* Docstrings for all my functions.
 
