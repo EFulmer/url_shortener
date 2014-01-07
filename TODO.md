@@ -8,12 +8,12 @@ Bugs
 Usability
 ---------
 * Flash a confirmation message to the user with the shortened URL.
+* Flash an error message to the user if they request a shortURL that isn't in the database.
 * Maybe come up with a way to use "better" shortened URLs; i.e. not just ericsurlshortneer.com/1?
 
 Features
 --------
 * Track how many times a specific URL has been redirected to.
-* When users enter URLs in, check whether or not the URL's already in the table, return its short version if so.
 
 Code Cleanliness
 ----------------

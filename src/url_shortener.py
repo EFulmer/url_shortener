@@ -55,7 +55,9 @@ def add_url():
     # versions.
     cr = g.db.cursor()
     # TODO: check that URL is valid?
-    cr.execute('INSERT INTO Link (url) VALUES (?);',
+    cr.execute('INSERT INTO Link (longurl) VALUES (?);',
+            [request.form['url']])
+    cr.execute('INSERT INTO Redirect (longurl, count) VALUES (?, 0);',
             [request.form['url']])
     g.db.commit()
     cr.close()
@@ -65,21 +67,25 @@ def add_url():
 
 @app.route('/<int:short_url>', methods=['GET'])
 def reroute_url(short_url):
-    # TODO redirect to error page if short_url doesn't exist in db
-    cr = g.db.execute('SELECT url FROM Link WHERE id = (?)',
+    # get longurl from short_url:
+    cr = g.db.execute('''SELECT L.longurl, R.count 
+                FROM Link L 
+                LEFT JOIN Redirect R WHERE id = (?)''',
             [short_url])
-    res = cr.fetchone()
-    cr.close()
+    long_url, count = cr.fetchone()
+
     # None returned if no results from query; 
     if not res:
         # TODO update main page to handle flashed messages.
         flash('Error: Unable to find site to redirect to.')
         return redirect(url_for('show_mainpage'))
     else:
-        # though res should always be a 1-tuple (or 0 if link isn't in 
-        # the db, redirect(res) will return something like 
-        # ('www.google.com,'), which obviously doesn't work, so we use
-        # res[0]
+        cr.close()
+        g.db.execute('''UPDATE Redirect
+                        SET longurl=(?), count=(?)
+                        WHERE longurl=(?);''',
+                        [long_url, count + 1, long_url])
+        g.db.commit()
         return redirect(res[0])
 
 

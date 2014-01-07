@@ -3,8 +3,16 @@
 -- more than a toy web app
 
 DROP TABLE IF EXISTS Link;
+DROP TABLE IF EXISTS Redirect;
 
 CREATE TABLE Link (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    url TEXT NOT NULL
+    longurl TEXT NOT NULL
 );
+
+CREATE TABLE Redirect (
+    longurl TEXT PRIMARY KEY,
+    count INTEGER,
+    FOREIGN KEY(longurl) REFERENCES Link(longurl)
+);
+    
