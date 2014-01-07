@@ -73,6 +73,7 @@ def reroute_url(short_url):
                 LEFT JOIN Redirect R WHERE id = (?)''',
             [short_url])
     long_url, count = cr.fetchone()
+    cr.close()
 
     # None returned if no results from query; 
     if not res:
@@ -80,7 +81,6 @@ def reroute_url(short_url):
         flash('Error: Unable to find site to redirect to.')
         return redirect(url_for('show_mainpage'))
     else:
-        cr.close()
         g.db.execute('''UPDATE Redirect
                         SET longurl=(?), count=(?)
                         WHERE longurl=(?);''',
