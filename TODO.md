@@ -3,6 +3,7 @@ TODO List
 
 Bugs
 ----
+* Need to 'detect' URLs properly.
 * URL database should only be created if it does not already exist.
 
 Usability
@@ -13,7 +14,7 @@ Usability
 
 Features
 --------
-* Track how many times a specific URL has been redirected to.
+* ...Need some!
 
 Code Cleanliness
 ----------------
