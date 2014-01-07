@@ -59,6 +59,7 @@ def add_url():
             [request.form['url']])
     g.db.commit()
     cr.close()
+    # redirect to the main/top page ('/').
     return redirect(url_for('show_mainpage'))
 
 
@@ -69,11 +70,17 @@ def reroute_url(short_url):
             [short_url])
     res = cr.fetchone()
     cr.close()
-    # though res should always be a 1-tuple (or 0 if link isn't in 
-    # the db, redirect(res) will return something like 
-    # ('www.google.com,'), which obviously doesn't work, so we use
-    # res[0]
-    return redirect(res[0])
+    # None returned if no results from query; 
+    if not res:
+        # TODO update main page to handle flashed messages.
+        flash('Error: Unable to find site to redirect to.')
+        return redirect(url_for('show_mainpage'))
+    else:
+        # though res should always be a 1-tuple (or 0 if link isn't in 
+        # the db, redirect(res) will return something like 
+        # ('www.google.com,'), which obviously doesn't work, so we use
+        # res[0]
+        return redirect(res[0])
 
 
 def main():
