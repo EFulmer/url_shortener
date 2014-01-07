@@ -45,6 +45,7 @@ def teardown_request(exception):
 def show_mainpage():
     return render_template('shorten_url.html')
 
+
 @app.route('/add', methods=['POST'])
 def add_url():
     # add the thing to the db
@@ -58,7 +59,8 @@ def add_url():
             [request.form['url']])
     g.db.commit()
     cr.close()
-    return render_template('shorten_url.html')
+    return redirect(url_for('show_mainpage'))
+
 
 @app.route('/<int:short_url>', methods=['GET'])
 def reroute_url(short_url):
