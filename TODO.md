@@ -8,7 +8,6 @@ Bugs
 Usability
 ---------
 * Flash a confirmation message to the user with the shortened URL.
-* Return user to the main ('/') page after they add a URL (with '/add').
 * Maybe come up with a way to use "better" shortened URLs; i.e. not just ericsurlshortneer.com/1?
 
 Features
