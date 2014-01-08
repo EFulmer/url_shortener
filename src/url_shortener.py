@@ -16,7 +16,8 @@ import config
 
 
 app = Flask(__name__)
-
+# TODO move this to a better location!
+app_home = 'foo'
 
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
@@ -54,16 +55,16 @@ def add_url():
     # better idea - page with all URLS given and their shortened
     # versions.
     cr = g.db.cursor()
-    # TODO: check that URL is valid?
     cr.execute('INSERT INTO Link (longurl) VALUES (?);',
             [request.form['url']])
     cr.execute('INSERT INTO Redirect (longurl, count) VALUES (?, 0);',
             [request.form['url']])
-    short_url = cr.execute('SELECT id FROM Link WHERE longurl = (?);',
+    res = cr.execute('SELECT id FROM Link WHERE longurl = (?);',
             [request.form['url']])
+    short_url = res.fetchone()[0]
     g.db.commit()
     cr.close()
-    flash('Short url is {0}{1}'.format(url_for('show_mainpage'), short_url))
+    flash('Short url is {0}{1}'.format(app_home, short_url))
     # redirect to the main/top page ('/').
     return redirect(url_for('show_mainpage'))
 
