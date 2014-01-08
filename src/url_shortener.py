@@ -59,8 +59,11 @@ def add_url():
             [request.form['url']])
     cr.execute('INSERT INTO Redirect (longurl, count) VALUES (?, 0);',
             [request.form['url']])
+    short_url = cr.execute('SELECT id FROM Link WHERE longurl = (?);',
+            [request.form['url']])
     g.db.commit()
     cr.close()
+    flash('Short url is {0}{1}'.format(url_for('show_mainpage'), short_url))
     # redirect to the main/top page ('/').
     return redirect(url_for('show_mainpage'))
 
@@ -72,7 +75,7 @@ def reroute_url(short_url):
                 FROM Link L 
                 LEFT JOIN Redirect R WHERE id = (?)''',
             [short_url])
-    long_url, count = cr.fetchone()
+    res = cr.fetchone()
     cr.close()
 
     # None returned if no results from query; 
@@ -81,6 +84,7 @@ def reroute_url(short_url):
         flash('Error: Unable to find site to redirect to.')
         return redirect(url_for('show_mainpage'))
     else:
+        long_url, count = res
         g.db.execute('''UPDATE Redirect
                         SET longurl=(?), count=(?)
                         WHERE longurl=(?);''',
