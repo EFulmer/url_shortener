@@ -19,6 +19,7 @@ app = Flask(__name__)
 # TODO move this to a better location!
 app_home = 'foo'
 
+
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
 
