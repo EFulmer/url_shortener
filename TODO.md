@@ -13,7 +13,7 @@ Usability
 * Make a separate confirmation page after a URL is entered, send user to it after they actually submit the form.
 * Some form of admin page that lists the short redirects and their redirect count.
 
-Code Cleanliness
-----------------
+Code Cleanliness and Quality
+----------------------------
 * Docstrings for all my functions.
-
+* Testing suite!
