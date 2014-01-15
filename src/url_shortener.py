@@ -21,10 +21,12 @@ app_home = 'foo'
 
 
 def connect_db():
+    """Return a connection to the app's (SQLite3) database."""
     return sqlite3.connect(app.config['DATABASE'])
 
 
 def init_db():
+    """Initialize a new database."""
     with closing(connect_db()) as db:
         with app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
@@ -50,29 +52,34 @@ def show_mainpage():
 
 @app.route('/add', methods=['POST'])
 def add_url():
-    # add the thing to the db
-    # TODO: flash message with shortened URL
-    # or build a new page with it.
-    # better idea - page with all URLS given and their shortened
-    # versions.
-    cr = g.db.cursor()
-    cr.execute('INSERT INTO Link (longurl) VALUES (?);',
-            [request.form['url']])
-    cr.execute('INSERT INTO Redirect (longurl, count) VALUES (?, 0);',
-            [request.form['url']])
-    res = cr.execute('SELECT id FROM Link WHERE longurl = (?);',
-            [request.form['url']])
-    short_url = res.fetchone()[0]
-    g.db.commit()
-    cr.close()
-    flash('Short url is {0}{1}'.format(app_home, short_url))
-    # redirect to the main/top page ('/').
+    """
+    Insert the submitted URL into the database with a short version. 
+    Then redirect the user back to the main page, with a flashed 
+    message containing the shortened URL.
+    """
+    try:
+        cr = g.db.cursor()
+        cr.execute('INSERT INTO Link (longurl) VALUES (?);',
+                [request.form['url']])
+        cr.execute('INSERT INTO Redirect (longurl, count) VALUES (?, 0);',
+                [request.form['url']])
+        res = cr.execute('SELECT id FROM Link WHERE longurl = (?);',
+                [request.form['url']])
+
+        short_url = res.fetchone()[0]
+        g.db.commit()
+        cr.close()
+    except Exception:
+        flash("We're sorry, but an error occurred.")
+    else:
+        flash('Short url is {0}{1}'.format(app_home, short_url))
+    
     return redirect(url_for('show_mainpage'))
 
 
 @app.route('/<int:short_url>', methods=['GET'])
 def reroute_url(short_url):
-    # get longurl from short_url:
+    """Redirect the shortened URL to its actual destination."""
     cr = g.db.execute('''SELECT L.longurl, R.count 
                 FROM Link L 
                 LEFT JOIN Redirect R WHERE id = (?)''',
@@ -82,8 +89,8 @@ def reroute_url(short_url):
 
     # None returned if no results from query; 
     if not res:
-        # TODO update main page to handle flashed messages.
-        flash('Error: Unable to find site to redirect to.')
+        flash("Sorry, but there's no with the shortened form {0}.".format(
+            short_url))
         return redirect(url_for('show_mainpage'))
     else:
         long_url, count = res
