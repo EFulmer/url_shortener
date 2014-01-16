@@ -13,6 +13,7 @@ from flask import flash
 from flask import redirect
 
 import config
+import tlds
 
 
 app = Flask(__name__)
@@ -58,6 +59,12 @@ def add_url():
     Then redirect the user back to the main page, with a flashed 
     message containing the shortened URL.
     """
+    url = request.form['url']
+
+    if not tlds.has_valid_tld(url):
+        flash("Sorry, but {0} isn't a valid url. ".format(url))
+        return redirect(url_for('show_mainpage'))
+
     try:
         cr = g.db.cursor()
         cr.execute('INSERT INTO Link (longurl) VALUES (?);',

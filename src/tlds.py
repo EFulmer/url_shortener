@@ -22,5 +22,7 @@ tlds = get_tlds(TLD_URL)
 
 
 def has_valid_tld(url, tlds=tlds):
+    # TODO: better way of making sure that has_valid_tld('') doesn't 
+    # returh True
     url_tld = extract(url).suffix
     return url_tld in tlds and url_tld != ''
