@@ -17,7 +17,7 @@ Usability
 Code Cleanliness and Quality
 ----------------------------
 * Clean up `tlds.py`.
-** Update tld list on startup of the app, if it's older than say, a day?
+    * Update tld list on startup of the app, if it's older than say, a day?
 * Rename `src` to `url_shortener`?
 * Docstrings for all my functions.
 * Testing suite!
