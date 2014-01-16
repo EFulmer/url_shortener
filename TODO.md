@@ -16,5 +16,6 @@ Usability
 
 Code Cleanliness and Quality
 ----------------------------
+* Clean up `tlds.py`.
 * Docstrings for all my functions.
 * Testing suite!
