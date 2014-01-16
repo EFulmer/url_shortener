@@ -47,6 +47,7 @@ def teardown_request(exception):
 
 @app.route('/')
 def show_mainpage():
+    """Show the main page."""
     return render_template('shorten_url.html')
 
 
@@ -103,6 +104,7 @@ def reroute_url(short_url):
 
 
 def main():
+    """Set up a new database for the URL shortener and then run it."""
     app.config.from_object(config)
     # FIXME only init_db iff app.cfg doesn't exist
     # using if not os.path.exists(app.config['DATABASE'] fails for 
