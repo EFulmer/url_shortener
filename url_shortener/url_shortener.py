@@ -113,11 +113,10 @@ def reroute_url(short_url):
 def main():
     """Set up a new database for the URL shortener and then run it."""
     app.config.from_object(config)
-    # FIXME only init_db iff app.cfg doesn't exist
-    # using if not os.path.exists(app.config['DATABASE'] fails for 
-    # some reason
     if not os.path.exists(app.config['DATABASE']):
         init_db()
+    if not os.path.exists(tlds.TLD_FILE):
+       tlds.write_tlds_to_file()
     app.run()
 
 
