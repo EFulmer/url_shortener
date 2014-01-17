@@ -116,7 +116,8 @@ def main():
     # FIXME only init_db iff app.cfg doesn't exist
     # using if not os.path.exists(app.config['DATABASE'] fails for 
     # some reason
-    init_db()
+    if not os.path.exists(app.config['DATABASE']):
+        init_db()
     app.run()
 
 
