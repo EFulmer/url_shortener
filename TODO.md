@@ -3,9 +3,9 @@ TODO List
 
 Bugs
 ----
+* Detect duplicate URLs better; if someone submits each of www.google.com, google.com, google.com/, http://www.google.com, that should only be one new entry in the database.
 * Basic URL checking; get the TLD and check it against a set of them?
 * URL database should only be created if it does not already exist.
-* Detect duplicate URLs better; if someone submits each of www.google.com, google.com, google.com/, http://www.google.com, that should only be one new entry in the database.
 
 Usability
 ---------
