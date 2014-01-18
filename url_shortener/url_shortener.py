@@ -17,8 +17,6 @@ import tlds
 
 
 app = Flask(__name__)
-# TODO move this to a better location!
-app_home = 'foo'
 
 
 def connect_db():
@@ -36,11 +34,18 @@ def init_db():
 
 @app.before_request
 def before_request():
+    """
+    Open a connection to the database, before actually handling the 
+    request.
+    """
     g.db = connect_db()
 
 
 @app.teardown_request
 def teardown_request(exception):
+    """
+    Close the connection to the database after the request is handled.
+    """
     db = getattr(g, 'db', None)
     if db is not None:
         db.close()
@@ -80,7 +85,7 @@ def add_url():
     except Exception:
         flash("We're sorry, but an error occurred.")
     else:
-        flash('Short url is {0}{1}'.format(app_home, short_url))
+        flash('Short url is {0}/{1}'.format(app_home, short_url))
     
     return redirect(url_for('show_mainpage'))
 
@@ -89,8 +94,8 @@ def add_url():
 def reroute_url(short_url):
     """Redirect the shortened URL to its actual destination."""
     cr = g.db.execute('''SELECT L.longurl, R.count 
-                FROM Link L 
-                LEFT JOIN Redirect R WHERE id = (?)''',
+                         FROM Link L 
+                         LEFT JOIN Redirect R WHERE id = (?)''',
             [short_url])
     res = cr.fetchone()
     cr.close()
