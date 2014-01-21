@@ -7,10 +7,11 @@ Bugs
 
 Usability
 ---------
+* Improve the stylesheet and visual presentation, rather than just cribbing from the Flask tutorial.
 * Maybe come up with a way to use "better" shortened URLs; i.e. not just ericsurlshortneer.com/1?
-* Actual stylesheets.
 * Make a separate confirmation page after a URL is entered, send user to it after they actually submit the form.
 * Some form of admin page that lists the short redirects and their redirect count.
+    * User accounts: log in to see the redirects you submitted and the number of times they were used.
 
 Code Cleanliness and Quality
 ----------------------------

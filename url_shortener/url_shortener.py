@@ -83,9 +83,11 @@ def add_url():
         g.db.commit()
         cr.close()
     except Exception:
+        # TODO log error msg and send to me.
         flash("We're sorry, but an error occurred.")
     else:
-        flash('Short url is {0}/{1}'.format(app_home, short_url))
+        flash('Short url is {0}/{1}'.format(app.config['HOSTNAME'], 
+                                            short_url))
     
     return redirect(url_for('show_mainpage'))
 
