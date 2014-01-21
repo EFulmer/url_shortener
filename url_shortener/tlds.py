@@ -22,9 +22,6 @@ def get_tlds(tld_site=TLD_URL):
     return frozenset(tlds)
 
 
-tlds = get_tlds(TLD_URL)
-
-
 def write_tlds_to_file(tlds=tlds, tld_file=TLD_FILE):
     """Write all of the TLDs to a file."""
     with open(tld_file, 'w') as f:
@@ -32,5 +29,9 @@ def write_tlds_to_file(tlds=tlds, tld_file=TLD_FILE):
 
 
 def has_valid_tld(url, tlds=tlds):
+    """Check whether url's TLD is in list of valid TLDs."""
     url_tld = extract(url).suffix
     return url_tld in tlds
+
+
+tlds = get_tlds(TLD_URL)

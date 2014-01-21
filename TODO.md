@@ -15,7 +15,7 @@ Usability
 
 Code Cleanliness and Quality
 ----------------------------
+* Tests. For everything.
 * Clean up `tlds.py`.
     * Update tld list on startup of the app, if it's older than say, a day?
 * Docstrings for all my functions.
-* Testing suite!
