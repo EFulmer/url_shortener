@@ -5,8 +5,9 @@
         <div class=flash>{{ message }}</div>
     {% endfor %}
     <dl>
-        <dt>URL:
-        <dd><input type=text size=50 name=url>
+	    <!-- this was the old version: <dt>URL:
+	    <dd><input type=text size=50 name=url> -->
+	 <dd><label for="url">URL: </label><input type="text" name="url" size="50">
         <dd><input type=submit value=Shorten>
     </dl>
 </form>
