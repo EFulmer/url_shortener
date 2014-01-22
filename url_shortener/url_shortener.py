@@ -67,7 +67,7 @@ def add_url():
     url = request.form['url']
 
     if not tlds.has_valid_tld(url):
-        flash("Sorry, but {0} isn't a valid url. ".format(url))
+        flash("Sorry, but {0} isn't a valid URL. ".format(url))
         return redirect(url_for('show_mainpage'))
 
     try:
@@ -104,7 +104,7 @@ def reroute_url(short_url):
 
     # None returned if no results from query; 
     if not res:
-        flash("Sorry, but there's no with the shortened form {0}.".format(
+        flash("Sorry, but there's no URL with the shortened form {0}.".format(
             short_url))
         return redirect(url_for('show_mainpage'))
     else:
