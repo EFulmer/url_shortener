@@ -3,7 +3,6 @@ TODO List
 
 Bugs
 ----
-* Detect duplicate URLs better; if someone submits each of www.google.com, google.com, google.com/, http://www.google.com, that should only be one new entry in the database.
 
 Usability
 ---------
