@@ -27,6 +27,7 @@ class URLShortenerTestCase(unittest.TestCase):
         # descriptor and the path to the file, so we're using the file 
         # as our test-app's database here.
         self.db_fd, url_shortener.app.config['DATABASE'] = tempfile.mkstemp()
+        url_shortener.app.config.from_object(url_shortener.config)
         url_shortener.app.config['TESTING'] = True
 
         # special method to create a test client, used so we can see 
@@ -53,6 +54,13 @@ class URLShortenerTestCase(unittest.TestCase):
         rv = self.submit_url('50 cent')
         resp = str(rv.data, encoding='utf8')
         assert 'Sorry, but' in resp
+    
+    def test_good_url(self):
+        """Test that a good url returns a confirmation page."""
+        rv = self.submit_url('www.python.org')
+        resp = str(rv.data, encoding='utf8')
+        assert 'Short url is ' in resp
+
 
 
 if __name__ == '__main__':
