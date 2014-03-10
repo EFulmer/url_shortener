@@ -1,4 +1,5 @@
 from contextlib import closing
+from datetime import datetime
 import os
 import sqlite3
 from urllib.parse import urlparse
@@ -79,8 +80,6 @@ def add_url():
         cr = g.db.cursor()
         cr.execute('INSERT INTO Link (longurl) VALUES (?);',
                 [url])
-        cr.execute('INSERT INTO Redirect (longurl, count) VALUES (?, 0);',
-                [url])
         res = cr.execute('SELECT id FROM Link WHERE longurl = (?);',
                 [url])
 
@@ -105,9 +104,9 @@ def register():
 @app.route('/<int:short_url>', methods=['GET'])
 def reroute_url(short_url):
     """Redirect the shortened URL to its actual destination."""
-    cr = g.db.execute('''SELECT L.longurl, R.count 
-                         FROM Link L 
-                         LEFT JOIN Redirect R WHERE id = (?)''',
+    cr = g.db.execute('''SELECT longurl
+                         FROM Link
+                         WHERE id = (?)''',
             [short_url])
     res = cr.fetchone()
     cr.close()
@@ -118,13 +117,12 @@ def reroute_url(short_url):
             short_url))
         return redirect(url_for('show_mainpage'))
     else:
-        long_url, count = res
-        g.db.execute('''UPDATE Redirect
-                        SET longurl=(?), count=(?)
-                        WHERE longurl=(?);''',
-                        [long_url, count + 1, long_url])
+        long_url = res[0]
+        g.db.execute('''INSERT INTO Redirect(longurl, time_accessed)
+                        VALUES ((?), (?));''',
+                        [long_url, str(datetime.now())])
         g.db.commit()
-        return redirect(res[0])
+        return redirect(long_url)
 
 
 def main():
