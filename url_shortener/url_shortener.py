@@ -97,6 +97,11 @@ def add_url():
     return redirect(url_for('show_mainpage'))
 
 
+@app.route('/register', methods=['GET'])
+def register():
+    return render_template('register.html')
+
+
 @app.route('/<int:short_url>', methods=['GET'])
 def reroute_url(short_url):
     """Redirect the shortened URL to its actual destination."""
@@ -134,3 +139,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

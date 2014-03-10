@@ -15,3 +15,7 @@ h1		{ font-size: 1.2em; }
 .flash		{ background: #cee5f5; padding: 0.5em; 
 		  border: 1px solid #aaabc2; }
 .error		{ background: #f0b6d6; padding: 0.5em; }
+
+label           { display: inline-block; width: 200px; margin-right: 30px; 
+                  text-align: right; }
+                    

@@ -9,10 +9,9 @@ CREATE TABLE Link (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
     longurl TEXT NOT NULL
 );
-
+ 
 CREATE TABLE Redirect (
     longurl TEXT PRIMARY KEY,
-    count INTEGER,
+    time_accessed TEXT,
     FOREIGN KEY(longurl) REFERENCES Link(longurl)
 );
-    

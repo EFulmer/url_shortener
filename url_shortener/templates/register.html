@@ -2,12 +2,12 @@
 {% block body %}
 <form action="{{ url_for('register') }}" method=post class=register>
     <dl>
-	    <!-- this was the old version: <dt>URL:
+        <!-- this was the old version: <dt>URL:
 	    <dd><input type=text size=50 name=url> -->
-	 <dd><label for="Email">Email: </label><input type="text" name="email" size="50">
-         <dd><label for="Password">Password: </label> <input type="password" name="password" size=20>
-         <dd><label for="Confirm Password">Confirm Password: </label><input type="confirm" size=20>
-         <dd><input type=submit value=Login>
+        <dd><label for="Email">Email: </label><input type="text" name="email" size="20">
+        <dd><label for="Password">Password: </label> <input type="password" name="password" size=20>
+        <dd><label for="Confirm Password">Confirm Password: </label><input type="confirm" size=20>
+        <dd><input type=submit value=Login>
     </dl>
 </form>
 {% endblock %}
